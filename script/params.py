@@ -38,10 +38,10 @@ class Params :
 
     def addJson(self,  value: dict):
         for key in value:
-                self.data[key] = value[key]
+                self.json[key] = value[key]
     def removeJson(self, value: dict):
         for key in value:
-            self.data.pop(key)
+            self.json.pop(key)
     def addParams(self, value: dict):
         for key in value:
             self.params[key] = value[key]
@@ -52,8 +52,8 @@ class Params :
     def changeData(self, value):
         self.data = value
     
-    def changeMethod(self, value):
-        self.method = value
+    def changeMethod(self, value: str):
+        self.method = value.strip().lower()
        
     def send(self):
         callApi : call_api.CallApi  = call_api.CallApi()

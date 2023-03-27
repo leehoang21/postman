@@ -20,7 +20,7 @@
 #lệnh chageBody : 'change_body : <body>'
     # nếu 2 lệnh này được gọi thì type_body sẽ được đổi thành khác
 #lệnh in config : 'config'
-#nhập json 
+#nhập json vd : '{"name":"thanh"}'
 
 import params
 import json
@@ -38,7 +38,8 @@ def handelDataJson(data:str):
             return None
 
     except Exception as e:
-        print('cần nhập dữ liệu dạng json')
+        print('định dạng json không hợp lệ')
+        print(e)
         return None
 
 while True:
@@ -48,7 +49,7 @@ while True:
         if command == 'quit':
             break
         elif command[:11] == 'http_method':
-            param.method = command[13:]
+            param.changeMethod(command[13:])
         elif command[:3] == 'url':
             param.url = command[5:]
         elif command[:6] == 'add_header':
@@ -69,9 +70,9 @@ while True:
                 param.removeParams(body)
         elif command[:10] == 'type_body':
             param.typeBody = command[12:]
-        elif command[:4] == 'add_body':
+        elif    command[:8] == 'add_body':
             param.typeBody = 'json'
-            body = handelDataJson(command[6:])
+            body = handelDataJson(command[10:])
             if body is not None:
                 param.addJson(body)
         elif command[:9] == 'remove_body':
@@ -79,7 +80,6 @@ while True:
             body = handelDataJson(command[11:])
             if body is not None:
                 param.removeJson(body)
-
         elif command[:8] == 'change_body':
             param.typeBody = ''
             param.changeData(command[10:])

@@ -27,7 +27,7 @@ def handelResponse(r):
             'cookies':cookiesPretty,
         }
             
-        return json.dumps(response, indent=2, sort_keys=True)
+        return response['body']
         
 
 def handelBody(params):
