@@ -50,7 +50,7 @@ def handelDataJson(data:str):
 while True:
     try :
         command = input("Nhập lệnh :")
-        command = command.strip()
+        
         if command == 'quit':
             break
         elif command[:11].strip() == 'http_method':
@@ -93,7 +93,9 @@ while True:
         elif command[:6].strip() == 'config':
             print(param.toString())
         elif command[:15].strip() == 'add_environment':
-            param.addEnvironment(command[18:].strip())
+            environment = handelDataJson(command[17:].strip())
+            if param is not None:
+                param.addEnvironment(environment)
         elif command[:19].strip() == 'remove_environment':
             param.removeEnvironment(command[21:].strip())
         else:

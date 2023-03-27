@@ -17,7 +17,7 @@ class Params :
         self.json = {}
         self.method = 'get'
         self.typeBody = 'json'
-        self.envifonments = []
+        self.environments = {}
 
     def toString(self):
         return f'''
@@ -28,7 +28,7 @@ class Params :
         json: {self.json}
         method: {self.method}
         typeBody: {self.typeBody}
-        envifonments: {self.envifonments}
+        environments: {self.environments}
         '''
 
     def addHeader(self, value: dict):
@@ -58,11 +58,12 @@ class Params :
     def changeMethod(self, value: str):
         self.method = value.strip().lower()
     
-    def addEnvironment(self, value: str):
-        self.envifonments.append(value)
+    def addEnvironment(self, value: dict):
+        for key in value:
+            self.environments[key] = value[key]
     
-    def removeEnvironment(self, value: str):
-        self.envifonments.remove(value)
+    def removeEnvironment(self, value: dict):
+        self.environments.remove(value)
        
     def send(self):
         callApi : call_api.CallApi  = call_api.CallApi()
