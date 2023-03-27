@@ -19,6 +19,11 @@
     # nếu 2 lệnh này được gọi thì type_body sẽ được đổi thành json
 #lệnh chageBody : 'change_body : <body>'
     # nếu 2 lệnh này được gọi thì type_body sẽ được đổi thành khác
+#lệnh thêm biến môi trường : 'add_environment : <environment>'
+#lệnh xóa biến môi trường : 'remove_environment : <environment>'
+    # environment là str
+    # cách nhập biến môi trường vào url thì biến môi trường để trong dấu {{}}
+    # vd : 'url : http://{{environment}}.com'
 #lệnh in config : 'config'
 #nhập json vd : '{"name":"thanh"}'
 
@@ -44,50 +49,55 @@ def handelDataJson(data:str):
 
 while True:
     try :
-        command = input("Enter a command: ")
+        command = input("Nhập lệnh :")
         command = command.strip()
         if command == 'quit':
             break
-        elif command[:11] == 'http_method':
-            param.changeMethod(command[13:])
-        elif command[:3] == 'url':
-            param.url = command[5:]
-        elif command[:6] == 'add_header':
-            header = handelDataJson(command[8:])
+        elif command[:11].strip() == 'http_method':
+            param.changeMethod(command[13:].strip())
+        elif command[:3].strip() == 'url':
+            param.url = command[5:].strip()
+        elif command[:6].strip() == 'add_header':
+            header = handelDataJson(command[8:].strip())
             if header is not None:
                 param.addHeader(header)
-        elif command[:11] == 'remove_header':
-            header = handelDataJson(command[13:])
+        elif command[:11].strip() == 'remove_header':
+            header = handelDataJson(command[13:].strip())
             if header is not None:
                 param.removeHeader(header)
-        elif command[:10] == 'add_params':
-            body = handelDataJson(command[12:])
+        elif command[:10].strip() == 'add_params':
+            body = handelDataJson(command[12:].strip())
             if param is not None:
                 param.addParams(body)
-        elif command[:15] == 'remove_params':
-            body = handelDataJson(command[17:])
+        elif command[:15].strip() == 'remove_params':
+            body = handelDataJson(command[17:].strip())
             if param is not None:
                 param.removeParams(body)
-        elif command[:10] == 'type_body':
-            param.typeBody = command[12:]
-        elif    command[:8] == 'add_body':
+        elif command[:10].strip() == 'type_body':
+            param.typeBody = command[12:].strip()
+        elif    command[:8].strip() == 'add_body':
             param.typeBody = 'json'
-            body = handelDataJson(command[10:])
+            body = handelDataJson(command[10:].strip())
             if body is not None:
                 param.addJson(body)
-        elif command[:9] == 'remove_body':
+        elif command[:9].strip() == 'remove_body':
             param.typeBody = 'json'
-            body = handelDataJson(command[11:])
+            body = handelDataJson(command[11:].strip())
             if body is not None:
                 param.removeJson(body)
-        elif command[:8] == 'change_body':
+        elif command[:8].strip() == 'change_body':
             param.typeBody = ''
-            param.changeData(command[10:])
-        elif command[:4] == 'send':
+            param.changeData(command[10:].strip())
+        elif command[:4].strip() == 'send':
             print(param.send())
-        elif command[:6] == 'config':
+        elif command[:6].strip() == 'config':
             print(param.toString())
+        elif command[:15].strip() == 'add_environment':
+            param.addEnvironment(command[18:].strip())
+        elif command[:19].strip() == 'remove_environment':
+            param.removeEnvironment(command[21:].strip())
         else:
+            print(command[:16])
             print('lệnh không hợp lệ')
     except Exception as e:
         print(e)

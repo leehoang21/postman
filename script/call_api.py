@@ -36,9 +36,23 @@ def handelBody(params):
     else:
         return params.data
 
-class CallApi:
+def handelUrl(params):
+    url = params.url
+    if params.url.__contains__('{{'):
+        listUrl = url.split('{{')
+        for i in range(len(listUrl)):
+            if listUrl[i].__contains__('}}'):
+                lists = listUrl[i].split('}}')
+                listUrl[i] = lists[0]
+                listUrl[i].insert(i, lists[1])
+        url = listUrl.join('')
+    return url
+        
 
+
+class CallApi:
     def get(self, params):
+        url = handelUrl(params)
         body  = handelBody(params)
         r = requests.get(params.url, json=body, params=body,
                         headers=params.headers, data=params.data)
