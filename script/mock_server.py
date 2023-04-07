@@ -16,9 +16,18 @@ class MockServerModel:
         self.status = status
         self.path = path
         self.methods = methods
+    
+    def toString(self):
+        return f'''
+        response: {self.response} 
+        status: {self.status}
+        path: {self.path}
+        methods: {self.methods}
+            
+        '''
 
 def mockServer():
-        _data = MockServer._data
+        _data = MockServer.data
         return Response(
             response=_data.response,
             status=_data.status,
@@ -32,15 +41,14 @@ def mockServer():
             },
 
         )
-        
 class MockServer:
-    _data = None
-    listData = [MockServerModel('{"status": "success"}', 200, '', ['GET'])]
-
-    for data in listData:
-        _data = data
-        app.add_url_rule('/'+data.path, data.path, mockServer)
+    def __init__(self, listData):
+        for data in listData:
+            self.data = data
+            app.add_url_rule('/'+data.path, data.path, mockServer)
 
 # url = ngrok.connect(5000).public_url
 # print('Henzy Tunnel URL:', url)
-app.run()
+
+def run():
+    app.run()

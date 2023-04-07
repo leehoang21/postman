@@ -1,7 +1,6 @@
 import call_api
 import mock_server
 
-
 def header(header):
     if header == None:
         headers = {
@@ -9,8 +8,6 @@ def header(header):
             'Accept': 'application/json',
         }
     return headers
-
-
 class Params:
     def __init__(self, url=None, params=None, headers=None, data=None, json=None):
         self.url = ''
@@ -23,6 +20,12 @@ class Params:
         self.environments = {}
         self.listMockServer = []
 
+    def printList(self,l):
+        s = ''
+        for i in l:
+            s = '\t'+ i.toString() + '\n'
+        return s
+
     def toString(self):
         return f'''
         url: {self.url} 
@@ -33,28 +36,28 @@ class Params:
         method: {self.method}
         typeBody: {self.typeBody}
         environments: {self.environments}
+        list mock server : {self.printList(self.listMockServer)}
         
         '''
+   
 
-    def addMockServer(seft, value: dict):
-        # {
-        #       'methods' : ['post','get'],
-        #       'path' : '/api/v1/users',
-        #       'response' : {}
-        #       'status' : 200
-        # }
+
+    def addMockServer(self, value: dict):
         self.listMockServer.append(mock_server.MockServerModel(
             value['response'], value['status'], value['path'], value['methods'],),)
-    
-    def removeMockServer(self, value: str):
-        self.listMockServer.remove(value)
-                
+        listMock = self.listMockServer
+        mock_server.mockServers(listMock)
 
+    def removeMockServer(self, path: str):
+        for e in self.listMockServer:
+            if e.path == path:
+                self.listMockServer.remove(e)
+                
     def addHeader(self, value: dict):
         for key in value:
             self.headers[key] = value[key]
 
-    def removeHeader(self, value: dict):
+    def removeHeader(self, value: list):
         for key in value:
             self.headers.pop(key)
 
@@ -62,7 +65,7 @@ class Params:
         for key in value:
             self.json[key] = value[key]
 
-    def removeJson(self, value: dict):
+    def removeJson(self, value: list):
         for key in value:
             self.json.pop(key)
 
@@ -70,7 +73,7 @@ class Params:
         for key in value:
             self.params[key] = value[key]
 
-    def removeParams(self, value: dict):
+    def removeParams(self, value: list):
         for key in value:
             self.params.pop(key)
 
@@ -84,8 +87,9 @@ class Params:
         for key in value:
             self.environments[key] = value[key]
 
-    def removeEnvironment(self, value: dict):
-        self.environments.remove(value)
+    def removeEnvironment(self, value: list):
+        for key in value:
+            self.environments.pop(key)
 
     def send(self):
         callApi: call_api.CallApi = call_api.CallApi()
