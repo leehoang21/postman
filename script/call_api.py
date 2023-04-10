@@ -1,34 +1,22 @@
 import requests
 import json
 import params
+from history import addHistory
 
-def handelResponse(r):
-        try:
-            j = json.loads(r.text)
-            
-            pretty = json.dumps(j, indent=2, sort_keys=True)
-        except:
-            pretty = r.text
-            
-        try :
-            headerPretty = json.dumps(r.headers, indent=2, sort_keys=True)
-        except:
-            headerPretty = r.headers
-        try :
-            cookiesPretty = json.dumps(r.cookies, indent=2, sort_keys=True)
-        except:
-            cookiesPretty = r.cookies
-        
-        response = {
-            'status_code': r.status_code,
-            'reason': r.reason,
-            'headers':headerPretty,
-            'body': pretty,
-            'cookies':cookiesPretty,
-        }
-            
-        return response['body']
-        
+def handelResponse(r,param):
+    try:
+        j = json.loads(r.text)
+        pretty = json.dumps(j, indent=2, sort_keys=True)
+    except:
+        pretty = r.text
+    try:
+        headerPretty = json.dumps(r.headers, indent=2, sort_keys=True)
+    except:
+        headerPretty = r.headers
+    response = '\t\t\t\t'+str(r.status_code)+' ' + r.reason + '\n' + pretty
+    #save to history
+    addHistory(param,response)
+    return response
 
 def handelBody(params):
     if params.typeBody == 'json':
@@ -36,73 +24,67 @@ def handelBody(params):
     else:
         return params.data
 
+def handelUrl(params):
+    url = str(params.url)
+    for key in params.environments:
+        url = url.replace('{{'+key+'}}', params.environments[key])
+    return url
+
+
 class CallApi:
 
     def get(self, params):
-        body  = handelBody(params)
-        r = requests.get(params.url, json=body, params=body,
-                        headers=params.headers, data=params.data)
-        j = handelResponse(r)
+        url = handelUrl(params)
+        body = handelBody(params)
+        r = requests.get(url, json=body, params=body,
+                         headers=params.headers, data=params.data)
+        j = handelResponse(r,param=params)
         return j
 
-
-    def post(self,params):
-        body  = handelBody(params)
-        r = requests.post(params.url, json=body, params=body,
-                        headers=params.headers, data=params.data)
-        j = handelResponse(r)
+    def post(self, params):
+        url = handelUrl(params)
+        body = handelBody(params)
+        r = requests.post(url, json=body, params=body,
+                          headers=params.headers, data=params.data)
+        j = handelResponse(r,param=params)
         return j
 
-
-    def put(self,params):
-        body  = handelBody(params)
-        r = requests.put(params.url, json=body, params=body,
-                        headers=params.headers, data=params.data)
-        j = handelResponse(r)
+    def put(self, params):
+        url = handelUrl(params)
+        body = handelBody(params)
+        r = requests.put(url, json=body, params=body,
+                         headers=params.headers, data=params.data)
+        j = handelResponse(r,param=params)
         return j
 
-
-    def delete(self,params):
-        body  = handelBody(params)
-        r = requests.delete(params.url, json=body, params=body,
-                        headers=params.headers, data=params.data)
-        j = handelResponse(r)
+    def delete(self, params):
+        url = handelUrl(params)
+        body = handelBody(params)
+        r = requests.delete(url, json=body, params=body,
+                            headers=params.headers, data=params.data)
+        j = handelResponse(r,param=params)
         return j
 
-
-    def patch(self,params):
-        body  = handelBody(params)
-        r = requests.patch(params.url, json=body, params=body,
-                        headers=params.headers, data=params.data)
-        j = handelResponse(r)
+    def patch(self, params):
+        url = handelUrl(params)
+        body = handelBody(params)
+        r = requests.patch(url, json=body, params=body,
+                           headers=params.headers, data=params.data)
+        j = handelResponse(r,param=params)
         return j
 
-    def head(self,params):
-        body  = handelBody(params)
-        r = requests.head(params.url, json=body, params=body,
-                        headers=params.headers, data=params.data)
-        j = handelResponse(r)
+    def head(self, params):
+        url = handelUrl(params)
+        body = handelBody(params)
+        r = requests.head(url, json=body, params=body,
+                          headers=params.headers, data=params.data)
+        j = handelResponse(r,param=params)
         return j
 
-    def options(self,params):
-        body  = handelBody(params)
-        r = requests.options(params.url, json=body, params=body,
-                        headers=params.headers, data=params.data)
-        j = handelResponse(r)
+    def options(self, params):
+        url = handelUrl(params)
+        body = handelBody(params)
+        r = requests.options(url, json=body, params=body,
+                             headers=params.headers, data=params.data)
+        j = handelResponse(r,param=params)
         return j
-
-
-
-# apiHost = 'http:hoanglee/'
-# hosttest = 'https://www.python.org/'
-# token = 'yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMzQuMjA5LjEwNi4yMjM6MjA0NVwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3OTQxMTkwMywiZXhwIjoxNjc5NDU1MTAzLCJuYmYiOjE2Nzk0MTE5MDMsImp0aSI6IjF6dm9ZZzM1OWtjc1N5SmsiLCJzdWIiOjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.tAIInZ8S7cz_3rSk8mVOVtCdZ_pkCOcBqGaBcINQfxI'
-# # test get
-# # print(get(apiHost+'asks?page=1&limit=10'))
-# # test post
-# reponse = post(params=params.Params(
-#    url =  hosttest + "testGet200",
-# ),)
-# # test put
-# # print(put(hosttest))
-# # test delete
-# # print(delete(hosttest))
