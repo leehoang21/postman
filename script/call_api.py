@@ -88,18 +88,3 @@ class CallApi:
                              headers=params.headers, data=params.data)
         j = handelResponse(r,param=params)
         return j
-
-
-# apiHost = 'http:hoanglee/'
-# hosttest = 'https://www.python.org/'
-# token = 'yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMzQuMjA5LjEwNi4yMjM6MjA0NVwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY3OTQxMTkwMywiZXhwIjoxNjc5NDU1MTAzLCJuYmYiOjE2Nzk0MTE5MDMsImp0aSI6IjF6dm9ZZzM1OWtjc1N5SmsiLCJzdWIiOjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.tAIInZ8S7cz_3rSk8mVOVtCdZ_pkCOcBqGaBcINQfxI'
-# # test get
-# # print(get(apiHost+'asks?page=1&limit=10'))
-# # test post
-# reponse = post(params=params.Params(
-#    url =  hosttest + "testGet200",
-# ),)
-# # test put
-# # print(put(hosttest))
-# # test delete
-# # print(delete(hosttest))
