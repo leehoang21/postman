@@ -1,5 +1,7 @@
 import call_api
 import mock_server
+import json
+
 
 def header(header):
     if header == None:
@@ -8,6 +10,8 @@ def header(header):
             'Accept': 'application/json',
         }
     return headers
+
+
 class Params:
     def __init__(self, url=None, params=None, headers=None, data=None, json=None):
         self.url = ''
@@ -18,41 +22,37 @@ class Params:
         self.method = 'get'
         self.typeBody = 'json'
         self.environments = {}
-        self.listMockServer = []
 
-    def printList(self,l):
-        s = ''
-        for i in l:
-            s = '\t'+ i.toString() + '\n'
-        return s
+    def toJson(self):
+        model = {
+            'url': self.url,
+            'params': self.params,
+            'headers': self.headers,
+            'data': self.data,
+            'json': self.json,
+            'method': self.method,
+            'typeBody': self.typeBody,
+            'environments': self.environments,
+        }
+        return json.dumps(model, indent=2, sort_keys=True)
 
-    def toString(self):
-        return f'''
-        url: {self.url} 
-        params: {self.params}
-        headers: {self.headers}
-        data: {self.data}
-        json: {self.json}
-        method: {self.method}
-        typeBody: {self.typeBody}
-        environments: {self.environments}
-        list mock server : {self.printList(self.listMockServer)}
-        
-        '''
-   
+    def saveData(self):
+        with open('data.json', 'w') as f:
+            json.dump(self.toJson(), f)
 
+    def loadData(self):
+        with open('data.json', 'r') as f:
+            strData = json.load(f)
+            data = json.loads(strData)
+            self.url = data['url']
+            self.params = data['params']
+            self.headers = data['headers']
+            self.data = data['data']
+            self.json = data['json']
+            self.method = data['method']
+            self.typeBody = data['typeBody']
+            self.environments = data['environments']
 
-    def addMockServer(self, value: dict):
-        self.listMockServer.append(mock_server.MockServerModel(
-            value['response'], value['status'], value['path'], value['methods'],),)
-        listMock = self.listMockServer
-        mock_server.mockServers(listMock)
-
-    def removeMockServer(self, path: str):
-        for e in self.listMockServer:
-            if e.path == path:
-                self.listMockServer.remove(e)
-                
     def addHeader(self, value: dict):
         for key in value:
             self.headers[key] = value[key]
