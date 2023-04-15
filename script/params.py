@@ -1,5 +1,4 @@
-import call_api
-import mock_server
+import call_apis
 import json
 
 
