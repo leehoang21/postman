@@ -1,5 +1,3 @@
-#listkey là list các key cần xóa
-#vd ['key1','key2']
     #url là str
 #lệnh thêm params : 'add_params : <params>'
     #params là dict
@@ -24,6 +22,8 @@
     # body có 2 loại là json và khác(nhập bắt cứ thứ gì khác json là được)
     # đổi loại không xoá dữ liệu loại cũ
 
+#listkey là list các key cần xóa
+#vd ['key1','key2']
 #lệnh xóa biến môi trường : 'remove_environment :  <listkey>'
 #lệnh xóa params : 'remove_params : <listkey>' 
 #lệnh xóa header : 'remove_header : <listkey>'
@@ -35,7 +35,6 @@
 #lệnh đổi url : 'url : <url>'
 #lệnh thoát : 'quit'
 #lệnh in lịch sử request : history
-
 
 import params
 import json
@@ -81,6 +80,7 @@ def handelDataList(data:str):
 while True:
     try :
         command = input("Nhập lệnh :")
+        command = command.lower()
         if command == 'quit':
             break
         elif command == 'history':
