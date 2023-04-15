@@ -1,1 +1,0 @@
-"{\n  \"data\": \"1\",\n  \"environments\": {},\n  \"headers\": {\n    \"Accept\": \"application/json\",\n    \"Content-Type\": \"application/json\"\n  },\n  \"json\": {\n    \"limit\": 10,\n    \"page\": 1\n  },\n  \"method\": \"get\",\n  \"params\": {},\n  \"typeBody\": \"json\",\n  \"url\": \"http://134.209.106.223:2045/api/asks\"\n}"
