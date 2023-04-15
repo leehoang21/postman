@@ -37,7 +37,7 @@ class CallApi:
         url = handelUrl(params)
         body = handelBody(params)
         r = requests.get(url, json=body, params=body,
-                         headers=params.headers, data=params.data)
+                         headers=params.headers, data=body)
         j = handelResponse(r,param=params)
         return j
 
@@ -45,7 +45,7 @@ class CallApi:
         url = handelUrl(params)
         body = handelBody(params)
         r = requests.post(url, json=body, params=body,
-                          headers=params.headers, data=params.data)
+                          headers=params.headers, data=body)
         j = handelResponse(r,param=params)
         return j
 
@@ -53,7 +53,7 @@ class CallApi:
         url = handelUrl(params)
         body = handelBody(params)
         r = requests.put(url, json=body, params=body,
-                         headers=params.headers, data=params.data)
+                         headers=params.headers, data=body)
         j = handelResponse(r,param=params)
         return j
 
@@ -61,7 +61,7 @@ class CallApi:
         url = handelUrl(params)
         body = handelBody(params)
         r = requests.delete(url, json=body, params=body,
-                            headers=params.headers, data=params.data)
+                            headers=params.headers, data=body)
         j = handelResponse(r,param=params)
         return j
 
@@ -69,7 +69,7 @@ class CallApi:
         url = handelUrl(params)
         body = handelBody(params)
         r = requests.patch(url, json=body, params=body,
-                           headers=params.headers, data=params.data)
+                           headers=params.headers, data=body)
         j = handelResponse(r,param=params)
         return j
 
@@ -77,7 +77,7 @@ class CallApi:
         url = handelUrl(params)
         body = handelBody(params)
         r = requests.head(url, json=body, params=body,
-                          headers=params.headers, data=params.data)
+                          headers=params.headers, data=body)
         j = handelResponse(r,param=params)
         return j
 
@@ -85,6 +85,6 @@ class CallApi:
         url = handelUrl(params)
         body = handelBody(params)
         r = requests.options(url, json=body, params=body,
-                             headers=params.headers, data=params.data)
+                             headers=params.headers, data=body)
         j = handelResponse(r,param=params)
         return j
